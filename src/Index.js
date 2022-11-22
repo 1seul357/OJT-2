@@ -20,22 +20,22 @@ export default class Index {
       .y(200);
     polygon.fill("#f06");
 
-    rect.draggable().on("dragmove", (e) => {
+    const dragItem = (e) => {
       const { handler, box } = e.detail;
       e.preventDefault();
       handler.move(box.x, box.y);
+    };
+
+    rect.draggable().on("dragmove", (e) => {
+      dragItem(e);
     });
 
     circle.draggable().on("dragmove", (e) => {
-      const { handler, box } = e.detail;
-      e.preventDefault();
-      handler.move(box.x, box.y);
+      dragItem(e);
     });
 
     polygon.draggable().on("dragmove", (e) => {
-      const { handler, box } = e.detail;
-      e.preventDefault();
-      handler.move(box.x, box.y);
+      dragItem(e);
     });
   }
 }
