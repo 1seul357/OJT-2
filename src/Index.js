@@ -24,7 +24,7 @@ export default class Index {
     // 사각형 클릭하면 꼭지점 나타남, 그룹화해서 드래그 시 같이 움직일 수 있도록 한 코드
     rect.click(function (e) {
       if (flag == true) {
-        const box = rect.bbox();
+        let box = rect.bbox();
         group.add(rect);
 
         const array = [
@@ -41,10 +41,14 @@ export default class Index {
             .y(array[i][1])
             .addClass("vertex")
             .attr({ fill: "black" });
-          circle.click(function (e) {
-            console.log(rect); // 클릭 후 크기 조절할 수 있게 만들기
-            circle.style.cursor = point;
+
+          circle.mousedown(function (e) {
+            // rect.width().height();
+            // box = rect.bbox();
+            // circle.x(box.x2 - 6).y(box.y2 - 6);
           });
+          circle.mousemove(function (e) {});
+          circle.mouseup(function (e) {});
           group.add(circle);
         }
         group.draggable().on("dragmove", (e) => {
