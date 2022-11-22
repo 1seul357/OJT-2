@@ -12,6 +12,7 @@
     "vite": "^3.2.3"
   },
   "dependencies": {
+    "@svgdotjs/svg.draggable.js": "^3.0.2",
     "@svgdotjs/svg.js": "^3.1.2"
   }
 }
