@@ -1,4 +1,5 @@
 import { SVG } from "@svgdotjs/svg.js";
+import "@svgdotjs/svg.draggable.js";
 
 export default class Index {
   constructor({ $target }) {
@@ -8,17 +9,33 @@ export default class Index {
     $target.appendChild(this.section);
   }
   render() {
-    var rect = SVG().addTo(this.section).size(300, 300);
-    rect.rect(150, 150).x(100).y(100).attr({ fill: "#3e5f97" });
+    var draw = SVG().addTo(this.section).size(800, 800);
+    var rect = draw.rect(150, 150).attr({ fill: "#3e5f97" });
 
-    var circle = SVG().addTo(this.section).size(300, 300);
-    circle.circle(150).x(100).y(100).attr({ fill: "#f4c17b" });
+    var circle = draw.circle(150).x(200).y(200).attr({ fill: "#f4c17b" });
 
-    var polygon = SVG().addTo(this.section).size(300, 300);
-    polygon
+    var polygon = draw
       .polygon("50, 0 60, 40 100, 50 60, 60 50, 100 40, 60 0, 50 40, 40")
-      .x(100)
-      .y(125);
-    polygon.fill("#f06").move(20, 20);
+      .x(500)
+      .y(200);
+    polygon.fill("#f06");
+
+    rect.draggable().on("dragmove", (e) => {
+      const { handler, box } = e.detail;
+      e.preventDefault();
+      handler.move(box.x, box.y);
+    });
+
+    circle.draggable().on("dragmove", (e) => {
+      const { handler, box } = e.detail;
+      e.preventDefault();
+      handler.move(box.x, box.y);
+    });
+
+    polygon.draggable().on("dragmove", (e) => {
+      const { handler, box } = e.detail;
+      e.preventDefault();
+      handler.move(box.x, box.y);
+    });
   }
 }
