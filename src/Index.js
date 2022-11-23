@@ -10,7 +10,7 @@ export default class Index {
   }
 
   render() {
-    let draw = SVG().addTo(this.section).size(800, 800);
+    let draw = SVG().addTo(this.section).size(1200, 900);
     let rect = draw
       .rect(150, 150)
       .x(100)
@@ -28,27 +28,61 @@ export default class Index {
         group.add(rect);
 
         const array = [
-          [box.x - 2, box.y - 2],
-          [box.x2 - 6, box.y - 2],
-          [box.x - 2, box.y2 - 6],
-          [box.x2 - 6, box.y2 - 6],
+          [box.x, box.y],
+          [box.x2, box.y],
+          [box.x, box.y2],
+          [box.x2, box.y2],
         ];
 
         for (let i = 0; i < array.length; i++) {
           const circle = draw
             .circle(10)
-            .x(array[i][0])
-            .y(array[i][1])
+            .cx(array[i][0])
+            .cy(array[i][1])
             .addClass("vertex")
+            .data("index", i)
             .attr({ fill: "black" });
 
-          circle.mousedown(function (e) {
-            // rect.width().height();
-            // box = rect.bbox();
-            // circle.x(box.x2 - 6).y(box.y2 - 6);
+          circle.draggable().on("dragmove", (e) => {
+            const index = e.detail.handler.el.node.dataset.index;
+            e.preventDefault();
+            let box2 = rect.bbox();
+            if (index == 0) {
+              rect
+                .x(e.detail.event.offsetX)
+                .y(e.detail.event.offsetY)
+                .width(box2.x2 - e.detail.event.offsetX)
+                .height(box2.y2 - e.detail.event.offsetY);
+            }
+            if (index == 1) {
+              rect
+                .y(e.detail.event.offsetY)
+                .width(e.detail.event.offsetX - box2.x)
+                .height(box2.y2 - e.detail.event.offsetY);
+            }
+            if (index == 2) {
+              rect
+                .x(e.detail.event.offsetX)
+                .width(box2.x2 - e.detail.event.offsetX)
+                .height(e.detail.event.offsetY - box2.y);
+            }
+            if (index == 3) {
+              rect
+                .width(e.detail.event.offsetX - box2.x)
+                .height(e.detail.event.offsetY - box2.y);
+            }
+            let circleArray = draw.find(".vertex");
+            for (let i = 0; i < 4; i++) {
+              // handler.move(box.x, box.y);
+              const arr = [
+                [box2.x, box2.y],
+                [box2.x2, box2.y],
+                [box2.x, box2.y2],
+                [box2.x2, box2.y2],
+              ];
+              circleArray[i].cx(arr[i][0]).cy(arr[i][1]);
+            }
           });
-          circle.mousemove(function (e) {});
-          circle.mouseup(function (e) {});
           group.add(circle);
         }
         group.draggable().on("dragmove", (e) => {
