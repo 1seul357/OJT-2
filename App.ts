@@ -1,13 +1,10 @@
-import Index from "./Index";
-import "./style.css";
+import Index from "./src/pages/Index";
+import "./src/css/style.css";
 
 export default class App {
-  public $target: HTMLElement;
-  constructor($target: HTMLElement) {
-    this.$target = $target;
+  constructor(public $target: HTMLElement) {
     const section = document.createElement("section");
     this.$target.appendChild(section);
-    this.render();
   }
   render() {
     new Index(this.$target);

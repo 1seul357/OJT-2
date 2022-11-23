@@ -79,7 +79,7 @@ export default class Index {
               rect.width(offsetX - box2.x).height(offsetY - box2.y);
             }
 
-            let circleArray = draw.find(".vertex");
+            const circleArray = draw.find(".vertex");
             for (let i = 0; i < 4; i++) {
               // handler.move(box.x, box.y);
               const arr = [
