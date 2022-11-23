@@ -102,16 +102,13 @@ export default class Index {
 
     // 사각형 제외 다른 영역 클릭 시 꼭지점 제거
     this.section.addEventListener("click", ((e: PointerEvent) => {
-      const target = e.target;
-      // console.log(target);
       if (
-        target instanceof SVGRectElement ||
+        e.target instanceof SVGRectElement ||
         Array.from(document.querySelectorAll(".vertex")).some(
-          (el) => el === target
+          (el) => el === e.target
         )
-      ) {
+      )
         return;
-      }
       flag = true;
       document.querySelectorAll(".vertex").forEach((node) => node.remove());
     }) as EventListener);
