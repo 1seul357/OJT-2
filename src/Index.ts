@@ -1,12 +1,18 @@
 import { SVG } from "@svgdotjs/svg.js";
 import "@svgdotjs/svg.draggable.js";
+// rect={showController,hideController},circle
+// [Rect,circle, line].foreach(el=>el.hideController())
+// class Rect {
+//   show
+//   hide
+// }
 
 export default class Index {
-  constructor({ $target }) {
-    this.$target = $target;
-    this.section = document.querySelector("section");
+  section;
+  constructor(public $target: HTMLElement) {
+    this.section = this.$target.querySelector("section")!;
+    this.$target.appendChild(this.section);
     this.render();
-    $target.appendChild(this.section);
   }
 
   render() {
@@ -22,7 +28,7 @@ export default class Index {
     const group = draw.group();
 
     // 사각형 클릭하면 꼭지점 나타남, 그룹화해서 드래그 시 같이 움직일 수 있도록 한 코드
-    rect.click(function (e) {
+    rect.click(function () {
       if (flag == true) {
         let box = rect.bbox();
         group.add(rect);
@@ -43,7 +49,7 @@ export default class Index {
             .data("index", i)
             .attr({ fill: "black" });
 
-          circle.draggable().on("dragmove", (e) => {
+          circle.draggable().on("dragmove", ((e: CustomEvent) => {
             e.preventDefault();
             const index = e.detail.handler.el.node.dataset.index;
             const offsetX = e.detail.event.offsetX;
@@ -84,38 +90,41 @@ export default class Index {
               ];
               circleArray[i].cx(arr[i][0]).cy(arr[i][1]);
             }
-          });
+          }) as EventListener);
           group.add(circle);
         }
-        group.draggable().on("dragmove", (e) => {
+        group.draggable().on("dragmove", ((e: CustomEvent) => {
           dragItem(e);
-        });
+        }) as EventListener);
       }
       flag = false;
     });
 
     // 사각형 제외 다른 영역 클릭 시 꼭지점 제거
-    this.section.addEventListener("click", function (e) {
+    this.section.addEventListener("click", ((e: PointerEvent) => {
+      const target = e.target;
+      // console.log(target);
       if (
-        e.target == document.querySelector(".rect") ||
-        e.target.className.animVal ==
-          document.querySelector(".vertex").className.animVal
+        target instanceof SVGRectElement ||
+        Array.from(document.querySelectorAll(".vertex")).some(
+          (el) => el === target
+        )
       ) {
         return;
       }
       flag = true;
       document.querySelectorAll(".vertex").forEach((node) => node.remove());
-    });
+    }) as EventListener);
 
     // 드래그 함수
-    const dragItem = (e) => {
+    const dragItem = (e: CustomEvent) => {
       const { handler, box } = e.detail;
       e.preventDefault();
       handler.move(box.x, box.y);
     };
 
-    circle.draggable().on("dragmove", (e) => {
+    circle.draggable().on("dragmove", ((e: CustomEvent) => {
       dragItem(e);
-    });
+    }) as EventListener);
   }
 }
