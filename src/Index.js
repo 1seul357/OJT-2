@@ -44,33 +44,35 @@ export default class Index {
             .attr({ fill: "black" });
 
           circle.draggable().on("dragmove", (e) => {
-            const index = e.detail.handler.el.node.dataset.index;
             e.preventDefault();
-            let box2 = rect.bbox();
-            if (index == 0) {
+            const index = e.detail.handler.el.node.dataset.index;
+            const offsetX = e.detail.event.offsetX;
+            const offsetY = e.detail.event.offsetY;
+            const box2 = rect.bbox();
+
+            if (index == 0 && offsetX <= box2.x2 && offsetY <= box2.y2) {
               rect
-                .x(e.detail.event.offsetX)
-                .y(e.detail.event.offsetY)
-                .width(box2.x2 - e.detail.event.offsetX)
-                .height(box2.y2 - e.detail.event.offsetY);
+                .x(offsetX)
+                .y(offsetY)
+                .width(box2.x2 - offsetX)
+                .height(box2.y2 - offsetY);
             }
-            if (index == 1) {
+            if (index == 1 && box2.x <= offsetX && offsetY <= box2.y2) {
               rect
-                .y(e.detail.event.offsetY)
-                .width(e.detail.event.offsetX - box2.x)
-                .height(box2.y2 - e.detail.event.offsetY);
+                .y(offsetY)
+                .width(offsetX - box2.x)
+                .height(box2.y2 - offsetY);
             }
-            if (index == 2) {
+            if (index == 2 && offsetX <= box2.x2 && box2.y <= offsetY) {
               rect
-                .x(e.detail.event.offsetX)
-                .width(box2.x2 - e.detail.event.offsetX)
-                .height(e.detail.event.offsetY - box2.y);
+                .x(offsetX)
+                .width(box2.x2 - offsetX)
+                .height(offsetY - box2.y);
             }
-            if (index == 3) {
-              rect
-                .width(e.detail.event.offsetX - box2.x)
-                .height(e.detail.event.offsetY - box2.y);
+            if (index == 3 && box2.x <= offsetX && box2.y <= offsetY) {
+              rect.width(offsetX - box2.x).height(offsetY - box2.y);
             }
+
             let circleArray = draw.find(".vertex");
             for (let i = 0; i < 4; i++) {
               // handler.move(box.x, box.y);
