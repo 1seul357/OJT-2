@@ -35,20 +35,20 @@ export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
 
         if (index == 0 && offsetX <= box2.x2 && offsetY <= box2.y2) {
           item
-            .x(offsetX)
-            .y(offsetY)
+            .x(item.type === "rect" ? offsetX : box2.x)
+            .y(item.type === "rect" ? offsetY : box2.y)
             .width(box2.x2 - offsetX)
             .height(box2.y2 - offsetY);
         }
         if (index == 1 && box2.x <= offsetX && offsetY <= box2.y2) {
           item
-            .y(offsetY)
+            .y(item.type === "rect" ? offsetY : box2.y)
             .width(offsetX - box2.x)
             .height(box2.y2 - offsetY);
         }
         if (index == 2 && offsetX <= box2.x2 && box2.y <= offsetY) {
           item
-            .x(offsetX)
+            .x(item.type === "rect" ? offsetX : box2.x)
             .width(box2.x2 - offsetX)
             .height(offsetY - box2.y);
         }
@@ -73,6 +73,7 @@ export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
       dragItem(e);
     }) as EventListener);
   }
+
   flag = false;
 
   const g = draw.find("g");
