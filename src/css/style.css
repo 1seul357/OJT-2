@@ -29,3 +29,11 @@ body {
   padding: 2rem;
   text-align: center;
 }
+
+.vertex:hover {
+  cursor: pointer;
+}
+
+.rotate:hover {
+  cursor: pointer;
+}
