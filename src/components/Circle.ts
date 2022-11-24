@@ -5,19 +5,17 @@ import { clickItem } from "../utils/ClickItem";
 interface dataType {
   key: string;
   width: number;
-  height?: number;
   x: number;
   y: number;
   fill: string;
 }
 
 export default class Circle {
-  constructor(public data: dataType, public draw: Svg, public flag: boolean) {
+  constructor(public data: dataType, public draw: Svg) {
     this.render();
   }
   render() {
     const data = this.data;
-    const flag = this.flag;
     const draw = this.draw;
 
     const circle = draw
@@ -27,7 +25,7 @@ export default class Circle {
       .attr({ fill: data.fill });
 
     circle.click(function () {
-      clickItem(circle, draw, flag);
+      clickItem(circle, draw);
     });
   }
 }

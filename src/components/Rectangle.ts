@@ -12,12 +12,11 @@ interface dataType {
 }
 
 export default class Rectangle {
-  constructor(public data: dataType, public draw: Svg, public flag: boolean) {
+  constructor(public data: dataType, public draw: Svg) {
     this.render();
   }
   render() {
     const data = this.data;
-    const flag = this.flag;
     const draw = this.draw;
 
     const rect = draw
@@ -27,7 +26,7 @@ export default class Rectangle {
       .attr({ fill: data.fill });
 
     rect.click(function () {
-      clickItem(rect, draw, flag);
+      clickItem(rect, draw);
     });
   }
   // fillcolor(){

@@ -19,13 +19,12 @@ export default class Index {
       { key: "circle", width: 250, x: 400, y: 450, fill: "#77af9c" },
     ];
     let draw = SVG().addTo(this.section).size(1200, 900);
-    let flag = true;
 
     data.forEach((el, i) => {
       if (el.key === "rect") {
-        new Rectangle(data[i], draw, flag);
+        new Rectangle(data[i], draw);
       } else {
-        new Circle(data[i], draw, flag);
+        new Circle(data[i], draw);
       }
     });
 
@@ -38,8 +37,8 @@ export default class Index {
         )
       )
         return;
-      flag = true;
       document.querySelectorAll(".vertex").forEach((node) => node.remove());
+      document.querySelector(".rotate")?.remove();
     }) as EventListener);
   }
 }
