@@ -5,7 +5,7 @@ export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
   flag = true;
   const group = draw.group();
 
-  if (flag == true) {
+  if (flag === true) {
     document.querySelectorAll(".vertex").forEach((node) => node.remove());
     let box = item.bbox();
     group.add(item);
@@ -33,26 +33,26 @@ export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
         const offsetY = e.detail.event.offsetY;
         const box2 = item.bbox();
 
-        if (index == 0 && offsetX <= box2.x2 && offsetY <= box2.y2) {
+        if (index === "0" && offsetX <= box2.x2 && offsetY <= box2.y2) {
           item
             .x(item.type === "rect" ? offsetX : box2.x)
             .y(item.type === "rect" ? offsetY : box2.y)
             .width(box2.x2 - offsetX)
             .height(box2.y2 - offsetY);
         }
-        if (index == 1 && box2.x <= offsetX && offsetY <= box2.y2) {
+        if (index === "1" && box2.x <= offsetX && offsetY <= box2.y2) {
           item
             .y(item.type === "rect" ? offsetY : box2.y)
             .width(offsetX - box2.x)
             .height(box2.y2 - offsetY);
         }
-        if (index == 2 && offsetX <= box2.x2 && box2.y <= offsetY) {
+        if (index === "2" && offsetX <= box2.x2 && box2.y <= offsetY) {
           item
             .x(item.type === "rect" ? offsetX : box2.x)
             .width(box2.x2 - offsetX)
             .height(offsetY - box2.y);
         }
-        if (index == 3 && box2.x <= offsetX && box2.y <= offsetY) {
+        if (index === "3" && box2.x <= offsetX && box2.y <= offsetY) {
           item.width(offsetX - box2.x).height(offsetY - box2.y);
         }
 
@@ -78,7 +78,7 @@ export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
 
   const g = draw.find("g");
   g.forEach((node) => {
-    if (node.node.childNodes.length == 0) {
+    if (node.node.childNodes.length === 0) {
       node.remove();
     }
   });
