@@ -1,8 +1,18 @@
 import "@svgdotjs/svg.draggable.js";
-import { clickItem } from "../utils/clickItem";
+import { Svg } from "@svgdotjs/svg.js";
+import { clickItem } from "../utils/ClickItem";
+
+interface dataType {
+  key: string;
+  width: number;
+  height?: number;
+  x: number;
+  y: number;
+  fill: string;
+}
 
 export default class Rectangle {
-  constructor(public data: any, public draw: any, public flag: boolean) {
+  constructor(public data: dataType, public draw: Svg, public flag: boolean) {
     this.data = data;
     this.draw = draw;
     this.flag = flag;
@@ -20,7 +30,7 @@ export default class Rectangle {
       .attr({ fill: data.fill });
 
     rect.click(function () {
-      clickItem(draw, rect, flag);
+      clickItem(rect, draw, flag);
     });
   }
 }

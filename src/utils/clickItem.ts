@@ -1,14 +1,9 @@
-import { dragItem } from "../utils/Drag";
+import { Svg } from "@svgdotjs/svg.js";
+import { dragItem } from "./Drag";
 
-export const clickItem = (draw: any, item: any, flag: boolean) => {
+export const clickItem = (item: Svg, draw: Svg, flag: boolean) => {
   flag = true;
   const group = draw.group();
-  //   const g = draw.find("g");
-  //   g.forEach((node: any) => {
-  //     if (node.node.children.length == 0) {
-  //       node.remove();
-  //     }
-  //   });
 
   if (flag == true) {
     document.querySelectorAll(".vertex").forEach((node) => node.remove());
@@ -79,4 +74,11 @@ export const clickItem = (draw: any, item: any, flag: boolean) => {
     }) as EventListener);
   }
   flag = false;
+
+  const g = draw.find("g");
+  g.forEach((node) => {
+    if (node.node.childNodes.length == 0) {
+      node.remove();
+    }
+  });
 };
