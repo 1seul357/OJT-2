@@ -13,9 +13,6 @@ interface dataType {
 
 export default class Rectangle {
   constructor(public data: dataType, public draw: Svg, public flag: boolean) {
-    this.data = data;
-    this.draw = draw;
-    this.flag = flag;
     this.render();
   }
   render() {
@@ -33,4 +30,7 @@ export default class Rectangle {
       clickItem(rect, draw, flag);
     });
   }
+  // fillcolor(){
+  //   this.rect.fill('#')
+  // }
 }

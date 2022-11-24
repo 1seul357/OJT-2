@@ -14,8 +14,9 @@ export default class Index {
   render() {
     const data = [
       { key: "rect", width: 150, height: 150, x: 100, y: 100, fill: "#3e5f97" },
-      { key: "rect", width: 300, height: 300, x: 600, y: 300, fill: "#FFC6E0" },
-      { key: "circle", width: 150, x: 250, y: 250, fill: "#f4c17b" },
+      { key: "rect", width: 300, height: 300, x: 750, y: 300, fill: "#FFC6E0" },
+      { key: "circle", width: 150, x: 300, y: 250, fill: "#f4c17b" },
+      { key: "circle", width: 250, x: 400, y: 450, fill: "#77af9c" },
     ];
     let draw = SVG().addTo(this.section).size(1200, 900);
     let flag = true;

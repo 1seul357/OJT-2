@@ -13,9 +13,6 @@ interface dataType {
 
 export default class Circle {
   constructor(public data: dataType, public draw: Svg, public flag: boolean) {
-    this.data = data;
-    this.draw = draw;
-    this.flag = flag;
     this.render();
   }
   render() {

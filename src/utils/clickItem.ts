@@ -1,7 +1,7 @@
-import { Svg } from "@svgdotjs/svg.js";
+import { Shape, Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "./Drag";
 
-export const clickItem = (item: Svg, draw: Svg, flag: boolean) => {
+export const clickItem = (item: Shape, draw: Svg, flag: boolean) => {
   flag = true;
   const group = draw.group();
 
