@@ -7,6 +7,7 @@ interface dataType {
   width: number;
   x: number;
   y: number;
+  angle: number;
   fill: string;
 }
 
@@ -17,15 +18,18 @@ export default class Circle {
   render() {
     const data = this.data;
     const draw = this.draw;
+    const g = draw.group();
 
     const circle = draw
       .circle(data.width)
       .x(data.x)
       .y(data.y)
+      .rotate(data.angle)
       .attr({ fill: data.fill });
+    const group = g.add(circle);
 
     circle.click(function () {
-      clickItem(circle, draw);
+      clickItem(group, draw, circle);
     });
   }
 }

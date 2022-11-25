@@ -1,19 +1,18 @@
 import { Shape, Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "./Drag";
 
-export const clickItem = (item: Shape, draw: Svg) => {
-  const group = draw.group();
-
+export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
   document.querySelectorAll(".vertex").forEach((node) => node.remove());
   document.querySelector(".rotate")?.remove();
   let box = item.bbox();
+
   const rotate = draw
     .circle(20)
     .cx(box.cx)
-    .cy(box.y - 50)
+    .cy(box.cy)
     .addClass("rotate")
     .attr({ fill: "#CCCCFF" });
-  group.add(item);
+  group.add(rotate);
 
   const array = [
     [box.x, box.y],
@@ -32,6 +31,7 @@ export const clickItem = (item: Shape, draw: Svg) => {
       .attr({ fill: "black" });
 
     vertex.draggable().on("dragmove", ((e: CustomEvent) => {
+      document.querySelector(".rotate")?.remove();
       e.preventDefault();
       const index = e.detail.handler.el.node.dataset.index;
       const offsetX = e.detail.event.offsetX;
@@ -75,16 +75,26 @@ export const clickItem = (item: Shape, draw: Svg) => {
     }) as EventListener);
     group.add(vertex);
   }
+
   group.draggable().on("dragmove", ((e: CustomEvent) => {
     document.querySelector(".rotate")?.remove();
+    e.preventDefault();
     dragItem(e);
   }) as EventListener);
 
-  rotate.draggable().on("dragmove", (e: any) => {
-    // group.transform({
-    //   rotate: e.detail.event.clientX,
-    // });
-  });
+  rotate.draggable().on("dragmove", ((e: CustomEvent) => {
+    const boxCenter = {
+      x: box.x + box.width / 2,
+      y: box.y + box.height / 2,
+    };
+    const angle =
+      Math.atan2(
+        e.detail.event.offsetX - boxCenter.x - 30,
+        -(e.detail.event.offsetY - boxCenter.y)
+      ) *
+      (180 / Math.PI);
+    group.transform({ rotate: angle });
+  }) as EventListener);
 
   const g = draw.find("g");
   g.forEach((node) => {
