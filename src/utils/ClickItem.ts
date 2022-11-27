@@ -1,18 +1,11 @@
 import { Shape, Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "./Drag";
 
-export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
+export const clickItem = (item: Shape, draw: Svg) => {
   document.querySelectorAll(".vertex").forEach((node) => node.remove());
-  document.querySelector(".rotate")?.remove();
   let box = item.bbox();
-
-  const rotate = draw
-    .circle(20)
-    .cx(box.cx)
-    .cy(box.cy)
-    .addClass("rotate")
-    .attr({ fill: "#CCCCFF" });
-  group.add(rotate);
+  const group = draw.group();
+  group.add(item);
 
   const array = [
     [box.x, box.y],
@@ -29,6 +22,7 @@ export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
       .addClass("vertex")
       .data("index", i)
       .attr({ fill: "black" });
+    group.add(vertex);
 
     vertex.draggable().on("dragmove", ((e: CustomEvent) => {
       document.querySelector(".rotate")?.remove();
@@ -60,7 +54,6 @@ export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
       if (index === "3" && box2.x <= offsetX && box2.y <= offsetY) {
         item.width(offsetX - box2.x).height(offsetY - box2.y);
       }
-      rotate.cx(box2.cx).cy(box2.y - 50);
 
       const circleArray = draw.find(".vertex");
       for (let i = 0; i < 4; i++) {
@@ -82,20 +75,6 @@ export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
     dragItem(e);
   }) as EventListener);
 
-  rotate.draggable().on("dragmove", ((e: CustomEvent) => {
-    const boxCenter = {
-      x: box.x + box.width / 2,
-      y: box.y + box.height / 2,
-    };
-    const angle =
-      Math.atan2(
-        e.detail.event.offsetX - boxCenter.x - 30,
-        -(e.detail.event.offsetY - boxCenter.y)
-      ) *
-      (180 / Math.PI);
-    group.transform({ rotate: angle });
-  }) as EventListener);
-
   const g = draw.find("g");
   g.forEach((node) => {
     if (node.node.childNodes.length === 0) {
@@ -103,3 +82,29 @@ export const clickItem = (group: Shape, draw: Svg, item: Shape) => {
     }
   });
 };
+
+// const rotate = draw
+//   .circle(20)
+//   .cx(box.cx)
+//   .cy(box.cy)
+//   .addClass("rotate")
+//   .attr({ fill: "#CCCCFF" });
+
+// group.add(rotate);
+// rotate.cx(box2.cx).cy(box2.y - 50);
+
+// rotate.draggable().on("dragmove", ((e: CustomEvent) => {
+//   const boxCenter = {
+//     x: box.x + box.width / 2,
+//     y: box.y + box.height / 2,
+//   };
+//   const angle =
+//     Math.atan2(
+//       e.detail.event.offsetX - boxCenter.x - 30,
+//       -(e.detail.event.offsetY - boxCenter.y)
+//     ) *
+//     (180 / Math.PI);
+//   group.transform({
+//     rotate: angle,
+//   });
+// }) as EventListener);
