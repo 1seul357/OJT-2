@@ -9,7 +9,9 @@ export const clickItem = (item: Shape, draw: Svg) => {
 
   window.addEventListener("keyup", (e) => {
     if (e.key === "Delete") {
-      group.remove();
+      if (group.node.childElementCount >= 4) {
+        group.remove();
+      }
     }
   });
 
