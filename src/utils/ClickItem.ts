@@ -7,6 +7,12 @@ export const clickItem = (item: Shape, draw: Svg) => {
   const group = draw.group();
   group.add(item);
 
+  window.addEventListener("keyup", (e) => {
+    if (e.key === "Delete") {
+      group.remove();
+    }
+  });
+
   const array =
     item.type === "polygon"
       ? [
