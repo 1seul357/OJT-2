@@ -1,4 +1,4 @@
-import { SVG } from "@svgdotjs/svg.js";
+import { Svg, SVG } from "@svgdotjs/svg.js";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
 import Polygon from "../components/Polygon";
@@ -9,14 +9,15 @@ import "../css/ItemList.css";
 
 export default class ItemList {
   section;
-  constructor(public $target: any) {
+  constructor(public $target: HTMLElement, public draw: Svg) {
     this.section = $target.querySelector("section");
     this.render();
   }
   render() {
+    const draw = this.draw;
     const container = document.createElement("div");
     container.className = "container";
-    this.section.appendChild(container);
+    this.section?.appendChild(container);
 
     const array = ["rect", "circle", "polygon"];
     const arrayImg = [rectImg, circleImg, polygonImg];
@@ -32,8 +33,6 @@ export default class ItemList {
         e.preventDefault();
       }) as EventListener);
     }
-
-    let draw = SVG().addTo(this.section).size(1200, 900);
 
     const data = {
       width: 150,
@@ -57,7 +56,7 @@ export default class ItemList {
       "#ff4f70",
     ];
 
-    this.section.addEventListener("drop", ((e: PointerEvent) => {
+    this.section?.addEventListener("drop", ((e: PointerEvent) => {
       const dragging = document.querySelector(".dragging");
       const random = Math.floor(Math.random() * colorList.length);
       data.x = e.offsetX - 150 / 2;
@@ -88,7 +87,7 @@ export default class ItemList {
       dragging?.classList.remove("dragging");
     }) as EventListener);
 
-    this.section.addEventListener("dragover", ((e: PointerEvent) => {
+    this.section?.addEventListener("dragover", ((e: PointerEvent) => {
       e.preventDefault();
     }) as EventListener);
   }
