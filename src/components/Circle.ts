@@ -4,7 +4,6 @@ import { clickItem } from "../utils/ClickItem";
 import colorList from "./ColorList";
 
 interface dataType {
-  key: string;
   width: number;
   x: number;
   y: number;

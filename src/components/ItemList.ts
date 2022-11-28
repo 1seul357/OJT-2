@@ -2,10 +2,10 @@ import { SVG } from "@svgdotjs/svg.js";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
 import Polygon from "../components/Polygon";
-import "../css/ItemList.css";
 import polygonImg from "../assets/polygon.png";
 import circleImg from "../assets/circle.png";
 import rectImg from "../assets/rect.png";
+import "../css/ItemList.css";
 
 export default class ItemList {
   section;
@@ -14,28 +14,6 @@ export default class ItemList {
     this.render();
   }
   render() {
-    const data = [
-      {
-        key: "rect",
-        width: 150,
-        height: 150,
-        x: 100,
-        y: 100,
-        fill: "#3e5f97",
-      },
-      {
-        key: "rect",
-        width: 300,
-        height: 300,
-        x: 750,
-        y: 300,
-        fill: "#FFC6E0",
-      },
-      { key: "circle", width: 150, x: 300, y: 250, fill: "#f4c17b" },
-      { key: "circle", width: 250, x: 400, y: 450, fill: "#77af9c" },
-      { key: "polygon", point: "200,500 300,700 100,700", fill: "#96B1D0" },
-    ];
-
     const container = document.createElement("div");
     container.className = "container";
     this.section.appendChild(container);
@@ -57,14 +35,54 @@ export default class ItemList {
 
     let draw = SVG().addTo(this.section).size(1200, 900);
 
+    const data = {
+      width: 150,
+      height: 150,
+      x: 0,
+      y: 0,
+      fill: "#fffb7a",
+      point: "0",
+    };
+
+    const colorList = [
+      "#3e5f97",
+      "#FFC6E0",
+      "#f4c17b",
+      "#EDAA7D",
+      "#fffb7a",
+      "#77af9c",
+      "#96B1D0",
+      "#d8ceff",
+      "#C8707E",
+      "#ff4f70",
+    ];
+
     this.section.addEventListener("drop", ((e: PointerEvent) => {
       const dragging = document.querySelector(".dragging");
+      const random = Math.floor(Math.random() * colorList.length);
+      data.x = e.offsetX - 150 / 2;
+      data.y = e.offsetY - 150 / 2;
+      data.fill = colorList[random];
+
       if (dragging?.classList.contains("circle")) {
-        new Circle(data[2], draw);
+        new Circle(data, draw);
       } else if (dragging?.classList.contains("rect")) {
-        new Rectangle(data[0], draw);
+        new Rectangle(data, draw);
       } else {
-        new Polygon(data[4], draw);
+        const point =
+          e.offsetX +
+          "," +
+          (e.offsetY - 75) +
+          " " +
+          (e.offsetX + 75) +
+          "," +
+          (e.offsetY + 75) +
+          " " +
+          (e.offsetX - 75) +
+          "," +
+          (e.offsetY + 75);
+        data.point = point;
+        new Polygon(data, draw);
       }
       e.preventDefault();
       dragging?.classList.remove("dragging");
