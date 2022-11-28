@@ -6,7 +6,7 @@ import colorList from "./ColorList";
 interface dataType {
   key: string;
   width: number;
-  height?: number;
+  height: number;
   x: number;
   y: number;
   fill: string;

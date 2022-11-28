@@ -5,7 +5,7 @@ export default class colorList {
   section;
   constructor(public shape: Shape) {
     this.section = document.querySelector("section");
-    document.querySelector(".container")?.remove();
+    document.querySelector(".colorContainer")?.remove();
     this.render();
   }
   render() {
@@ -23,7 +23,7 @@ export default class colorList {
     ];
 
     const container = document.createElement("div");
-    container.className = "container";
+    container.className = "colorContainer";
     this.section?.appendChild(container);
 
     colorList.forEach((colorName: string) => {

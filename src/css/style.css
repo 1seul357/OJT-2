@@ -29,6 +29,11 @@ body {
   text-align: center;
 }
 
+/* section {
+  display: flex;
+  flex-direction: column-reverse;
+} */
+
 .vertex:hover {
   cursor: pointer;
 }
