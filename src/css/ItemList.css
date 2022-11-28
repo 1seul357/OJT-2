@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+}
+
+img:hover {
+  cursor: pointer;
+}
