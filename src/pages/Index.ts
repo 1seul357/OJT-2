@@ -2,6 +2,7 @@ import { SVG } from "@svgdotjs/svg.js";
 import "@svgdotjs/svg.draggable.js";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
+import Triangle from "../components/Triangle";
 
 export default class Index {
   section;
@@ -29,16 +30,19 @@ export default class Index {
         y: 300,
         fill: "#FFC6E0",
       },
-      { key: "circle", width: 150, x: 300, y: 250, angle: 1, fill: "#f4c17b" },
-      { key: "circle", width: 250, x: 400, y: 450, angle: 1, fill: "#77af9c" },
+      { key: "circle", width: 150, x: 300, y: 250, fill: "#f4c17b" },
+      { key: "circle", width: 250, x: 400, y: 450, fill: "#77af9c" },
+      { key: "Triangle", point: "200,500 300,700 100,700", fill: "#96B1D0" },
     ];
     let draw = SVG().addTo(this.section).size(1200, 900);
 
     data.forEach((el, i) => {
       if (el.key === "rect") {
         new Rectangle(data[i], draw);
-      } else {
+      } else if (el.key === "circle") {
         new Circle(data[i], draw);
+      } else {
+        new Triangle(data[i], draw);
       }
     });
 
