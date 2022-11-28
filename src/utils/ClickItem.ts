@@ -7,12 +7,19 @@ export const clickItem = (item: Shape, draw: Svg) => {
   const group = draw.group();
   group.add(item);
 
-  const array = [
-    [box.x, box.y],
-    [box.x2, box.y],
-    [box.x, box.y2],
-    [box.x2, box.y2],
-  ];
+  const array =
+    item.type === "polygon"
+      ? [
+          [box.cx, box.y],
+          [box.x, box.y2],
+          [box.x2, box.y2],
+        ]
+      : [
+          [box.x, box.y],
+          [box.x2, box.y],
+          [box.x, box.y2],
+          [box.x2, box.y2],
+        ];
 
   for (let i = 0; i < array.length; i++) {
     const vertex = draw
@@ -32,37 +39,59 @@ export const clickItem = (item: Shape, draw: Svg) => {
       const offsetY = e.detail.event.offsetY;
       const box2 = item.bbox();
 
-      if (index === "0" && offsetX <= box2.x2 && offsetY <= box2.y2) {
-        item
-          .x(item.type === "rect" ? offsetX : box2.x)
-          .y(item.type === "rect" ? offsetY : box2.y)
-          .width(box2.x2 - offsetX)
-          .height(box2.y2 - offsetY);
-      }
-      if (index === "1" && box2.x <= offsetX && offsetY <= box2.y2) {
-        item
-          .y(item.type === "rect" ? offsetY : box2.y)
-          .width(offsetX - box2.x)
-          .height(box2.y2 - offsetY);
-      }
-      if (index === "2" && offsetX <= box2.x2 && box2.y <= offsetY) {
-        item
-          .x(item.type === "rect" ? offsetX : box2.x)
-          .width(box2.x2 - offsetX)
-          .height(offsetY - box2.y);
-      }
-      if (index === "3" && box2.x <= offsetX && box2.y <= offsetY) {
-        item.width(offsetX - box2.x).height(offsetY - box2.y);
+      if (item.type === "polygon") {
+        if (index === "0" && offsetX <= box2.x2 && offsetY <= box2.y2) {
+          item.y(offsetY).height(box2.y2 - offsetY);
+        }
+        if (index === "1" && offsetX <= box2.x2 && box2.y <= offsetY) {
+          item
+            .x(offsetX)
+            .width(box2.x2 - offsetX)
+            .height(offsetY - box2.y);
+        }
+        if (index === "2" && box2.x <= offsetX && box2.y <= offsetY) {
+          item.width(offsetX - box2.x).height(offsetY - box2.y);
+        }
+      } else {
+        if (index === "0" && offsetX <= box2.x2 && offsetY <= box2.y2) {
+          item
+            .x(item.type === "rect" ? offsetX : box2.x)
+            .y(item.type === "rect" ? offsetY : box2.y)
+            .width(box2.x2 - offsetX)
+            .height(box2.y2 - offsetY);
+        }
+        if (index === "1" && box2.x <= offsetX && offsetY <= box2.y2) {
+          item
+            .y(item.type === "rect" ? offsetY : box2.y)
+            .width(offsetX - box2.x)
+            .height(box2.y2 - offsetY);
+        }
+        if (index === "2" && offsetX <= box2.x2 && box2.y <= offsetY) {
+          item
+            .x(item.type === "rect" ? offsetX : box2.x)
+            .width(box2.x2 - offsetX)
+            .height(offsetY - box2.y);
+        }
+        if (index === "3" && box2.x <= offsetX && box2.y <= offsetY) {
+          item.width(offsetX - box2.x).height(offsetY - box2.y);
+        }
       }
 
       const circleArray = draw.find(".vertex");
-      for (let i = 0; i < 4; i++) {
-        const arr = [
-          [box2.x, box2.y],
-          [box2.x2, box2.y],
-          [box2.x, box2.y2],
-          [box2.x2, box2.y2],
-        ];
+      for (let i = 0; i < circleArray.length; i++) {
+        const arr =
+          item.type === "polygon"
+            ? [
+                [box2.cx, box2.y],
+                [box2.x, box2.y2],
+                [box2.x2, box2.y2],
+              ]
+            : [
+                [box2.x, box2.y],
+                [box2.x2, box2.y],
+                [box2.x, box2.y2],
+                [box2.x2, box2.y2],
+              ];
         circleArray[i].cx(arr[i][0]).cy(arr[i][1]);
       }
     }) as EventListener);

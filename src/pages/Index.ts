@@ -32,7 +32,7 @@ export default class Index {
       },
       { key: "circle", width: 150, x: 300, y: 250, fill: "#f4c17b" },
       { key: "circle", width: 250, x: 400, y: 450, fill: "#77af9c" },
-      { key: "Triangle", point: "200,500 300,700 100,700", fill: "#96B1D0" },
+      { key: "polygon", point: "200,500 300,700 100,700", fill: "#96B1D0" },
     ];
     let draw = SVG().addTo(this.section).size(1200, 900);
 

@@ -1,6 +1,6 @@
 import "@svgdotjs/svg.draggable.js";
 import { Svg } from "@svgdotjs/svg.js";
-import { clickTri } from "../utils/ClickTri";
+import { clickItem } from "../utils/ClickItem";
 import colorList from "./ColorList";
 
 interface dataType {
@@ -9,7 +9,7 @@ interface dataType {
   fill: string;
 }
 
-export default class Triangle {
+export default class Polygon {
   constructor(public data: dataType, public draw: Svg) {
     this.render();
   }
@@ -17,11 +17,11 @@ export default class Triangle {
     const data = this.data;
     const draw = this.draw;
 
-    const triangle = draw.polygon(data.point).attr({ fill: data.fill });
+    const polygon = draw.polygon(data.point).attr({ fill: data.fill });
 
-    triangle.click(function () {
-      clickTri(triangle, draw);
-      new colorList(triangle);
+    polygon.click(function () {
+      clickItem(polygon, draw);
+      new colorList(polygon);
     });
   }
 }
