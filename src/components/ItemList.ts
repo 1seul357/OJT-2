@@ -1,4 +1,4 @@
-import { Svg, SVG } from "@svgdotjs/svg.js";
+import { Svg } from "@svgdotjs/svg.js";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
 import Polygon from "../components/Polygon";
@@ -6,6 +6,7 @@ import polygonImg from "../assets/polygon.png";
 import circleImg from "../assets/circle.png";
 import rectImg from "../assets/rect.png";
 import "../css/ItemList.css";
+import { colorData, itemData } from "./Data";
 
 export default class ItemList {
   section;
@@ -22,6 +23,7 @@ export default class ItemList {
     const draw = this.draw;
     const isFlag = this.isFlag;
     const multipleSelection = this.multipleSelection;
+
     const container = document.createElement("div");
     container.className = "container";
     this.section?.appendChild(container);
@@ -41,39 +43,17 @@ export default class ItemList {
       }) as EventListener);
     }
 
-    const data = {
-      width: 150,
-      height: 150,
-      x: 0,
-      y: 0,
-      fill: "#fffb7a",
-      point: "0",
-    };
-
-    const colorList = [
-      "#3e5f97",
-      "#FFC6E0",
-      "#f4c17b",
-      "#EDAA7D",
-      "#fffb7a",
-      "#77af9c",
-      "#96B1D0",
-      "#d8ceff",
-      "#C8707E",
-      "#ff4f70",
-    ];
-
     this.section?.addEventListener("drop", ((e: PointerEvent) => {
       const dragging = document.querySelector(".dragging");
-      const random = Math.floor(Math.random() * colorList.length);
-      data.x = e.offsetX - 150 / 2;
-      data.y = e.offsetY - 150 / 2;
-      data.fill = colorList[random];
+      const random = Math.floor(Math.random() * colorData.length);
+      itemData.x = e.offsetX - 150 / 2;
+      itemData.y = e.offsetY - 150 / 2;
+      itemData.fill = colorData[random];
 
       if (dragging?.classList.contains("circle")) {
-        new Circle(data, draw, multipleSelection, isFlag);
+        new Circle(itemData, draw, multipleSelection, isFlag);
       } else if (dragging?.classList.contains("rect")) {
-        new Rectangle(data, draw, multipleSelection, isFlag);
+        new Rectangle(itemData, draw, multipleSelection, isFlag);
       } else {
         const point =
           e.offsetX +
@@ -87,8 +67,8 @@ export default class ItemList {
           (e.offsetX - 75) +
           "," +
           (e.offsetY + 75);
-        data.point = point;
-        new Polygon(data, draw, multipleSelection, isFlag);
+        itemData.point = point;
+        new Polygon(itemData, draw, multipleSelection, isFlag);
       }
       e.preventDefault();
       dragging?.classList.remove("dragging");

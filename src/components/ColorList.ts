@@ -1,5 +1,6 @@
 import { Shape } from "@svgdotjs/svg.js";
 import "../css/color.css";
+import { colorData } from "./Data";
 
 export default class colorList {
   section;
@@ -9,24 +10,11 @@ export default class colorList {
     this.render();
   }
   render() {
-    const colorList = [
-      "#3e5f97",
-      "#FFC6E0",
-      "#f4c17b",
-      "#EDAA7D",
-      "#fffb7a",
-      "#77af9c",
-      "#96B1D0",
-      "#d8ceff",
-      "#C8707E",
-      "#ff4f70",
-    ];
-
     const container = document.createElement("div");
     container.className = "colorContainer";
     this.section?.appendChild(container);
 
-    colorList.forEach((colorName: string) => {
+    colorData.forEach((colorName: string) => {
       const color = document.createElement("div");
       color.className = "color";
       color.style.backgroundColor = colorName;

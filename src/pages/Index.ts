@@ -35,11 +35,11 @@ export default class Index {
 
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
       flag = 0;
-      // this.draw.find("g").forEach((node) => {
-      //   if (node.node.childNodes.length === 0) {
-      //     node.remove();
-      //   }
-      // });
+      this.draw.find("g").forEach((node) => {
+        if (node.node.childNodes.length === 0) {
+          node.remove();
+        }
+      });
       document.querySelector(".group")?.classList.remove("group");
       if (
         e.target instanceof SVGRectElement ||

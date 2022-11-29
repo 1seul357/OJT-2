@@ -22,6 +22,7 @@ export default class Polygon {
     const draw = this.draw;
     const multipleSelection = this.multipleSelection;
     const isFlag = this.isFlag;
+
     const polygon = draw.polygon(data.point).attr({ fill: data.fill });
 
     polygon.click(function (e: MouseEvent) {

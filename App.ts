@@ -7,7 +7,7 @@ export default class App {
   constructor(public $target: HTMLElement) {
     const section = document.createElement("section");
     this.$target.appendChild(section);
-    this.draw = SVG().size(1200, 900).addClass("svg");
+    this.draw = SVG().size(1200, 600).addClass("svg");
   }
   render() {
     new Index(this.$target, this.draw);
