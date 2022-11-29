@@ -9,12 +9,19 @@ import "../css/ItemList.css";
 
 export default class ItemList {
   section;
-  constructor(public $target: HTMLElement, public draw: Svg) {
+  constructor(
+    public $target: HTMLElement,
+    public draw: Svg,
+    public multipleSelection: Function,
+    public isFlag: Function
+  ) {
     this.section = $target.querySelector("section");
     this.render();
   }
   render() {
     const draw = this.draw;
+    const isFlag = this.isFlag;
+    const multipleSelection = this.multipleSelection;
     const container = document.createElement("div");
     container.className = "container";
     this.section?.appendChild(container);
@@ -64,9 +71,9 @@ export default class ItemList {
       data.fill = colorList[random];
 
       if (dragging?.classList.contains("circle")) {
-        new Circle(data, draw);
+        new Circle(data, draw, multipleSelection, isFlag);
       } else if (dragging?.classList.contains("rect")) {
-        new Rectangle(data, draw);
+        new Rectangle(data, draw, multipleSelection, isFlag);
       } else {
         const point =
           e.offsetX +
@@ -81,7 +88,7 @@ export default class ItemList {
           "," +
           (e.offsetY + 75);
         data.point = point;
-        new Polygon(data, draw);
+        new Polygon(data, draw, multipleSelection, isFlag);
       }
       e.preventDefault();
       dragging?.classList.remove("dragging");

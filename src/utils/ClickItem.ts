@@ -111,13 +111,6 @@ export const clickItem = (item: Shape, draw: Svg) => {
     e.preventDefault();
     dragItem(e);
   }) as EventListener);
-
-  const g = draw.find("g");
-  g.forEach((node) => {
-    if (node.node.childNodes.length === 0) {
-      node.remove();
-    }
-  });
 };
 
 // const rotate = draw
