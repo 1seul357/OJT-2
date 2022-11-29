@@ -1,4 +1,5 @@
 import { Svg } from "@svgdotjs/svg.js";
+import { colorData, itemData } from "./Data";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
 import Polygon from "../components/Polygon";
@@ -6,16 +7,10 @@ import polygonImg from "../assets/polygon.png";
 import circleImg from "../assets/circle.png";
 import rectImg from "../assets/rect.png";
 import "../css/ItemList.css";
-import { colorData, itemData } from "./Data";
 
 export default class ItemList {
   section;
-  constructor(
-    public $target: HTMLElement,
-    public draw: Svg,
-    public multipleSelection: Function,
-    public isFlag: Function
-  ) {
+  constructor(public $target: HTMLElement, public draw: Svg, public multipleSelection: Function, public isFlag: Function) {
     this.section = $target.querySelector("section");
     this.render();
   }
@@ -39,7 +34,6 @@ export default class ItemList {
 
       image.addEventListener("drag", ((e: PointerEvent) => {
         image.classList.add("dragging");
-        e.preventDefault();
       }) as EventListener);
     }
 
@@ -55,18 +49,7 @@ export default class ItemList {
       } else if (dragging?.classList.contains("rect")) {
         new Rectangle(itemData, draw, multipleSelection, isFlag);
       } else {
-        const point =
-          e.offsetX +
-          "," +
-          (e.offsetY - 75) +
-          " " +
-          (e.offsetX + 75) +
-          "," +
-          (e.offsetY + 75) +
-          " " +
-          (e.offsetX - 75) +
-          "," +
-          (e.offsetY + 75);
+        const point = e.offsetX + "," + (e.offsetY - 75) + " " + (e.offsetX + 75) + "," +(e.offsetY + 75) + " " + (e.offsetX - 75) + "," + (e.offsetY + 75);
         itemData.point = point;
         new Polygon(itemData, draw, multipleSelection, isFlag);
       }

@@ -20,13 +20,7 @@ export default class Index {
       flag = 1;
       group.add(item).addClass("group");
       const box = group.bbox();
-      const select = this.draw
-        .rect(box.width, box.height)
-        .x(box.x)
-        .y(box.y)
-        .addClass("select")
-        .attr({ fill: "#ffffff66" })
-        .stroke({ color: "#00000099" });
+      const select = this.draw.rect(box.width, box.height).x(box.x).y(box.y).addClass("select").attr({ fill: "#ffffff66" }).stroke({ color: "#00000099" });
       group.add(select);
     };
 
@@ -45,7 +39,9 @@ export default class Index {
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
       document.querySelectorAll(".select").forEach((node) => node.remove());
       flag = 0;
-      removeGroup();
+      if (document.querySelector(".group")) {
+        removeGroup();
+      };
       if (
         e.target instanceof SVGRectElement ||
         e.target instanceof SVGCircleElement ||
@@ -59,9 +55,3 @@ export default class Index {
     }) as EventListener);
   }
 }
-
-// this.draw.find("g").forEach((node) => {
-//   if (node.node.childNodes.length === 0) {
-//     node.remove();
-//   }
-// });

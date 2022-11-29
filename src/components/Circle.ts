@@ -11,12 +11,7 @@ interface dataType {
 }
 
 export default class Circle {
-  constructor(
-    public data: dataType,
-    public draw: Svg,
-    public multipleSelection: Function,
-    public isFlag: Function
-  ) {
+  constructor(public data: dataType, public draw: Svg, public multipleSelection: Function, public isFlag: Function) {
     this.render();
   }
   render() {
@@ -24,13 +19,8 @@ export default class Circle {
     const draw = this.draw;
     const multipleSelection = this.multipleSelection;
     const isFlag = this.isFlag;
-    console.log(isFlag);
 
-    const circle = draw
-      .circle(data.width)
-      .x(data.x)
-      .y(data.y)
-      .attr({ fill: data.fill });
+    const circle = draw.circle(data.width).x(data.x).y(data.y).attr({ fill: data.fill });
 
     circle.click(function (e: MouseEvent) {
       const flag = isFlag();

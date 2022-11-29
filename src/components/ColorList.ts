@@ -1,6 +1,6 @@
 import { Shape } from "@svgdotjs/svg.js";
-import "../css/color.css";
 import { colorData } from "./Data";
+import "../css/color.css";
 
 export default class colorList {
   section;

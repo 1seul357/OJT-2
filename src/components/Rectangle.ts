@@ -12,12 +12,7 @@ interface dataType {
 }
 
 export default class Rectangle {
-  constructor(
-    public data: dataType,
-    public draw: Svg,
-    public multipleSelection: Function,
-    public isFlag: Function
-  ) {
+  constructor(public data: dataType, public draw: Svg, public multipleSelection: Function, public isFlag: Function) {
     this.render();
   }
   render() {
@@ -26,11 +21,7 @@ export default class Rectangle {
     const multipleSelection = this.multipleSelection;
     const isFlag = this.isFlag;
 
-    const rect = draw
-      .rect(data.width, data.height)
-      .x(data.x)
-      .y(data.y)
-      .attr({ fill: data.fill });
+    const rect = draw.rect(data.width, data.height).x(data.x).y(data.y).attr({ fill: data.fill });
 
     rect.click(function (e: MouseEvent) {
       const flag = isFlag();
