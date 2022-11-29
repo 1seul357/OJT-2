@@ -28,6 +28,7 @@ export default class Polygon {
     polygon.click(function (e: MouseEvent) {
       const flag = isFlag();
       if (e.shiftKey) {
+        document.querySelectorAll(".vertex").forEach((node) => node.remove());
         multipleSelection(polygon);
       } else {
         if (flag == 0) {

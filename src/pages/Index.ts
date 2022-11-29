@@ -2,6 +2,7 @@ import "@svgdotjs/svg.draggable.js";
 import { Shape, Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "../utils/Drag";
 import ItemList from "../components/ItemList";
+import { removeGroup } from "../utils/removeGroup";
 
 export default class Index {
   section;
@@ -13,20 +14,28 @@ export default class Index {
   render() {
     const group = this.draw.group();
     let flag = 0;
+
     const multipleSelection = (item: Shape) => {
+      document.querySelector(".colorContainer")?.remove();
       flag = 1;
       group.add(item).addClass("group");
+      const box = group.bbox();
+      const select = this.draw
+        .rect(box.width, box.height)
+        .x(box.x)
+        .y(box.y)
+        .addClass("select")
+        .attr({ fill: "#ffffff66" })
+        .stroke({ color: "#00000099" });
+      group.add(select);
     };
 
-    const isFlag = () => {
+    new ItemList(this.$target, this.draw, multipleSelection, () => {
       return flag;
-    };
-
-    new ItemList(this.$target, this.draw, multipleSelection, isFlag);
+    });
     this.draw.addTo(this.section);
 
     group.draggable().on("dragmove", ((e: CustomEvent) => {
-      document.querySelectorAll(".vertex").forEach((node) => node.remove());
       e.preventDefault();
       if (document.querySelector(".group")) {
         dragItem(e);
@@ -34,13 +43,9 @@ export default class Index {
     }) as EventListener);
 
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
+      document.querySelectorAll(".select").forEach((node) => node.remove());
       flag = 0;
-      this.draw.find("g").forEach((node) => {
-        if (node.node.childNodes.length === 0) {
-          node.remove();
-        }
-      });
-      document.querySelector(".group")?.classList.remove("group");
+      removeGroup();
       if (
         e.target instanceof SVGRectElement ||
         e.target instanceof SVGCircleElement ||
@@ -54,3 +59,9 @@ export default class Index {
     }) as EventListener);
   }
 }
+
+// this.draw.find("g").forEach((node) => {
+//   if (node.node.childNodes.length === 0) {
+//     node.remove();
+//   }
+// });

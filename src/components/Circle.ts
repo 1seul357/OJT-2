@@ -24,6 +24,7 @@ export default class Circle {
     const draw = this.draw;
     const multipleSelection = this.multipleSelection;
     const isFlag = this.isFlag;
+    console.log(isFlag);
 
     const circle = draw
       .circle(data.width)
@@ -34,6 +35,7 @@ export default class Circle {
     circle.click(function (e: MouseEvent) {
       const flag = isFlag();
       if (e.shiftKey) {
+        document.querySelectorAll(".vertex").forEach((node) => node.remove());
         multipleSelection(circle);
       } else {
         if (flag == 0) {

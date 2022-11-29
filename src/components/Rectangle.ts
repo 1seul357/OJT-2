@@ -35,6 +35,7 @@ export default class Rectangle {
     rect.click(function (e: MouseEvent) {
       const flag = isFlag();
       if (e.shiftKey) {
+        document.querySelectorAll(".vertex").forEach((node) => node.remove());
         multipleSelection(rect);
       } else {
         if (flag == 0) {
