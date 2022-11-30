@@ -1,4 +1,6 @@
-export const getBox = (item: any) => {
+import { Shape } from "@svgdotjs/svg.js";
+
+export const getBox = (item: Shape) => {
   const box = item.bbox();
   const array =
     item.type === "polygon"

@@ -1,5 +1,5 @@
 import { Svg } from "@svgdotjs/svg.js";
-import { colorData, itemData } from "./Data";
+import { colorData, itemData } from "../utils/Data";
 import Circle from "../components/Circle";
 import Rectangle from "../components/Rectangle";
 import Polygon from "../components/Polygon";
@@ -7,11 +7,12 @@ import polygonImg from "../assets/polygon.png";
 import circleImg from "../assets/circle.png";
 import rectImg from "../assets/rect.png";
 import "../css/ItemList.css";
+import Element, { createElement } from "../utils/Element";
 
 export default class ItemList {
   section;
   constructor(public $target: HTMLElement, public draw: Svg, public multipleSelection: Function, public isFlag: Function) {
-    this.section = $target.querySelector("section");
+    this.section = new Element(document.querySelector("section"));
     this.render();
   }
   render() {
@@ -19,34 +20,28 @@ export default class ItemList {
     const isFlag = this.isFlag;
     const multipleSelection = this.multipleSelection;
 
-    const container = document.createElement("div");
-    container.className = "container";
-    this.section?.appendChild(container);
+    const container = createElement("div").addClass("container").appendTo(this.section);
 
     const array = ["rect", "circle", "polygon"];
     const arrayImg = [rectImg, circleImg, polygonImg];
 
     for (let index = 0; index < array.length; index++) {
-      const image = document.createElement("img");
-      image.src = arrayImg[index];
-      image.className = array[index];
-      container.appendChild(image);
-
-      image.addEventListener("drag", ((e: PointerEvent) => {
-        image.classList.add("dragging");
+      const image = createElement("img").src(arrayImg[index]).addClass(array[index]).appendTo(container)
+      image.on("drag", ((e: PointerEvent) => {
+        image.addClass("dragging");
       }) as EventListener);
     }
 
-    this.section?.addEventListener("drop", ((e: PointerEvent) => {
-      const dragging = document.querySelector(".dragging");
+    this.section.on("drop", ((e: PointerEvent) => {
+      const dragging = this.section.select(".dragging");
       const random = Math.floor(Math.random() * colorData.length);
       itemData.x = e.offsetX - 150 / 2;
       itemData.y = e.offsetY - 150 / 2;
       itemData.fill = colorData[random];
 
-      if (dragging?.classList.contains("circle")) {
+      if (dragging.isContainClass("circle")) {
         new Circle(itemData, draw, multipleSelection, isFlag);
-      } else if (dragging?.classList.contains("rect")) {
+      } else if (dragging.isContainClass("rect")) {
         new Rectangle(itemData, draw, multipleSelection, isFlag);
       } else {
         const point = e.offsetX + "," + (e.offsetY - 75) + " " + (e.offsetX + 75) + "," +(e.offsetY + 75) + " " + (e.offsetX - 75) + "," + (e.offsetY + 75);
@@ -54,10 +49,10 @@ export default class ItemList {
         new Polygon(itemData, draw, multipleSelection, isFlag);
       }
       e.preventDefault();
-      dragging?.classList.remove("dragging");
+      dragging.removeClass("dragging");
     }) as EventListener);
 
-    this.section?.addEventListener("dragover", ((e: PointerEvent) => {
+    this.section.on("dragover", ((e: PointerEvent) => {
       e.preventDefault();
     }) as EventListener);
   }

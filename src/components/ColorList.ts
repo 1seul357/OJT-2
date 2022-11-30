@@ -1,27 +1,22 @@
 import { Shape } from "@svgdotjs/svg.js";
-import { colorData } from "./Data";
+import { colorData } from "../utils/Data";
+import Element, { createElement } from "../utils/Element";
 import "../css/color.css";
 
 export default class colorList {
   section;
   constructor(public shape: Shape) {
-    this.section = document.querySelector("section");
-    document.querySelector(".colorContainer")?.remove();
+    this.section = new Element(document.querySelector("section"));
+    this.section.select(".colorContainer").remove();
     this.render();
   }
   render() {
-    const container = document.createElement("div");
-    container.className = "colorContainer";
-    this.section?.appendChild(container);
-
+    const container = createElement("div").addClass("colorContainer").appendTo(this.section);
     colorData.forEach((colorName: string) => {
-      const color = document.createElement("div");
-      color.className = "color";
-      color.style.backgroundColor = colorName;
-      container?.appendChild(color);
+      const color = createElement("div").addClass("color").style(colorName).appendTo(container);
 
-      color.addEventListener("click", () => {
-        this.shape.attr({ fill: color.style.backgroundColor });
+      color.on('click', () => {
+        this.shape.attr({ fill: color.node.style.backgroundColor });
       });
     });
   }
