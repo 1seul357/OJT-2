@@ -1,4 +1,5 @@
 import { Shape, Svg } from "@svgdotjs/svg.js";
+import { dragItem } from "./Drag";
 import colorList from "../components/ColorList";
 
 export const clickItem = (
@@ -9,6 +10,8 @@ export const clickItem = (
   document.querySelectorAll(".circles").forEach((node) => node.remove());
   const g = draw.group();
   let controller: () => void;
+  // item.cx(0).cy(0).rotate(-15).translate(150, 75);
+  // const rect = g.rect(50, 100).cx(0).cy(0).rotate(-15).translate(150, 75);
   g.add(item).fill("transparent").stroke("#66666699");
   new colorList(item);
 
@@ -48,9 +51,9 @@ export const clickItem = (
       .fill("transparent")
       .addTo(g);
 
-    const x1 = Number(g.x());
+    const x1 = Number(el.x());
     const x2 = x1 + Number(el.width());
-    const y1 = Number(g.y());
+    const y1 = Number(el.y());
     const y2 = y1 + Number(el.height());
     const cx = (x1 + x2) / 2;
     const cy = (y1 + y2) / 2;
@@ -63,6 +66,32 @@ export const clickItem = (
 
     const r = ((el.transform().rotate ?? 0) * Math.PI) / 180;
     const inverse = el.matrix().multiply(el.matrix().inverse());
+
+    const rotate = g
+      .circle(20)
+      .cx(cx)
+      .cy(cy)
+      .addClass("rotate")
+      .attr({ fill: "#CCCCFF" });
+
+    rotate.draggable().on("dragmove", ((e: CustomEvent) => {
+      e.preventDefault();
+      dragItem(e);
+      const boxCenter = {
+        x: x1 + Number(el.width()) / 2,
+        y: y1 + Number(el.height()) / 2,
+      };
+      const angle =
+        Math.atan2(
+          e.detail.event.offsetX - boxCenter.x,
+          -(e.detail.event.offsetY - boxCenter.y)
+        ) *
+        (180 / Math.PI);
+      clone.transform({
+        rotate: angle,
+      });
+      el.transform({ rotate: angle });
+    }) as EventListener);
 
     const circles = pts.map((pt, i) => {
       const circle = g
@@ -118,6 +147,7 @@ export const clickItem = (
     const remove = () => {
       circles.forEach((el) => el.remove());
       clone.remove();
+      rotate.remove();
     };
     return remove;
   };
@@ -131,35 +161,4 @@ export const clickItem = (
   });
 
   controller = makeController(item);
-
-  // g.draggable().on("dragmove", ((e: CustomEvent) => {
-  //   e.preventDefault();
-  //   dragItem(e);
-  // }) as EventListener);
-
-  //   const rotate = draw
-  //   .circle(20)
-  //   .cx(box.cx)
-  //   .cy(box.cy)
-  //   .addClass("rotate")
-  //   .attr({ fill: "#CCCCFF" });
-
-  // group.add(rotate);
-  // rotate.cx(box2.cx).cy(box2.y - 50);
-
-  // rotate.draggable().on("dragmove", ((e: CustomEvent) => {
-  //   const boxCenter = {
-  //     x: box.x + box.width / 2,
-  //     y: box.y + box.height / 2,
-  //   };
-  //   const angle =
-  //     Math.atan2(
-  //       e.detail.event.offsetX - boxCenter.x - 30,
-  //       -(e.detail.event.offsetY - boxCenter.y)
-  //     ) *
-  //     (180 / Math.PI);
-  //   group.transform({
-  //     rotate: angle,
-  //   });
-  // }) as EventListener);
 };
