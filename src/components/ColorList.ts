@@ -11,11 +11,16 @@ export default class colorList {
     this.render();
   }
   render() {
-    const container = createElement("div").addClass("colorContainer").appendTo(this.section);
+    const container = createElement("div")
+      .addClass("colorContainer")
+      .appendTo(this.section);
     colorData.forEach((colorName: string) => {
-      const color = createElement("div").addClass("color").style(colorName).appendTo(container);
+      const color = createElement("div")
+        .addClass("color")
+        .style(colorName)
+        .appendTo(container);
 
-      color.on('click', () => {
+      color.on("click", () => {
         this.shape.attr({ fill: color.node.style.backgroundColor });
       });
     });

@@ -1,5 +1,5 @@
 import "@svgdotjs/svg.draggable.js";
-import { Shape, Svg } from "@svgdotjs/svg.js";
+import { Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "../utils/Drag";
 import ItemList from "../components/ItemList";
 import { removeGroup } from "../utils/removeGroup";
@@ -13,20 +13,23 @@ export default class Index {
 
   render() {
     const group = this.draw.group();
-    let flag = 0;
-
-    const multipleSelection = (item: Shape) => {
+    const multipleSelection = (item: any) => {
+      const items: any = item;
       document.querySelector(".colorContainer")?.remove();
-      flag = 1;
-      group.add(item).addClass("group");
+      document.querySelectorAll(".circles").forEach((node) => node.remove());
+      group.add(items).addClass("group");
       const box = group.bbox();
-      const select = this.draw.rect(box.width, box.height).x(box.x).y(box.y).addClass("select").attr({ fill: "#ffffff66" }).stroke({ color: "#00000099" });
+      const select = this.draw
+        .rect(box.width, box.height)
+        .x(box.x)
+        .y(box.y)
+        .addClass("select")
+        .attr({ fill: "#ffffff66" })
+        .stroke({ color: "#00000099" });
       group.add(select);
     };
 
-    new ItemList(this.$target, this.draw, multipleSelection, () => {
-      return flag;
-    });
+    new ItemList(this.$target, this.draw, multipleSelection);
     this.draw.addTo(this.section);
 
     group.draggable().on("dragmove", ((e: CustomEvent) => {
@@ -38,20 +41,11 @@ export default class Index {
 
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
       document.querySelectorAll(".select").forEach((node) => node.remove());
-      flag = 0;
+      document.querySelectorAll(".circles").forEach((node) => node.remove());
+      document.querySelector(".colorContainer")?.remove();
       if (document.querySelector(".group")) {
         removeGroup();
-      };
-      if (
-        e.target instanceof SVGRectElement ||
-        e.target instanceof SVGCircleElement ||
-        Array.from(document.querySelectorAll(".vertex")).some(
-          (el) => el === e.target
-        )
-      )
-        return;
-      document.querySelectorAll(".vertex").forEach((node) => node.remove());
-      document.querySelector(".colorContainer")?.remove();
+      }
     }) as EventListener);
   }
 }

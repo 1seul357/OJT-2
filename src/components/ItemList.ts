@@ -11,22 +11,30 @@ import Element, { createElement } from "../utils/Element";
 
 export default class ItemList {
   section;
-  constructor(public $target: HTMLElement, public draw: Svg, public multipleSelection: Function, public isFlag: Function) {
+  constructor(
+    public $target: HTMLElement,
+    public draw: Svg,
+    public multipleSelection: Function
+  ) {
     this.section = new Element(document.querySelector("section"));
     this.render();
   }
   render() {
     const draw = this.draw;
-    const isFlag = this.isFlag;
     const multipleSelection = this.multipleSelection;
 
-    const container = createElement("div").addClass("container").appendTo(this.section);
+    const container = createElement("div")
+      .addClass("container")
+      .appendTo(this.section);
 
     const array = ["rect", "circle", "polygon"];
     const arrayImg = [rectImg, circleImg, polygonImg];
 
     for (let index = 0; index < array.length; index++) {
-      const image = createElement("img").src(arrayImg[index]).addClass(array[index]).appendTo(container)
+      const image = createElement("img")
+        .src(arrayImg[index])
+        .addClass(array[index])
+        .appendTo(container);
       image.on("drag", ((e: PointerEvent) => {
         image.addClass("dragging");
       }) as EventListener);
@@ -40,13 +48,24 @@ export default class ItemList {
       itemData.fill = colorData[random];
 
       if (dragging.isContainClass("circle")) {
-        new Circle(itemData, draw, multipleSelection, isFlag);
+        new Circle(itemData, draw, multipleSelection);
       } else if (dragging.isContainClass("rect")) {
-        new Rectangle(itemData, draw, multipleSelection, isFlag);
+        new Rectangle(itemData, draw, multipleSelection);
       } else {
-        const point = e.offsetX + "," + (e.offsetY - 75) + " " + (e.offsetX + 75) + "," +(e.offsetY + 75) + " " + (e.offsetX - 75) + "," + (e.offsetY + 75);
+        const point =
+          e.offsetX +
+          "," +
+          (e.offsetY - 75) +
+          " " +
+          (e.offsetX + 75) +
+          "," +
+          (e.offsetY + 75) +
+          " " +
+          (e.offsetX - 75) +
+          "," +
+          (e.offsetY + 75);
         itemData.point = point;
-        new Polygon(itemData, draw, multipleSelection, isFlag);
+        new Polygon(itemData, draw, multipleSelection);
       }
       e.preventDefault();
       dragging.removeClass("dragging");
