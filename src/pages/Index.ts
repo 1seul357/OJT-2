@@ -14,7 +14,8 @@ export default class Index {
   render() {
     const group = this.draw.group();
 
-    const multipleSelection = (item: any) => {
+    const multipleSelection = (item: Svg) => {
+      console.log(item);
       document.querySelector(".colorContainer")?.remove();
       document.querySelectorAll(".circles").forEach((node) => node.remove());
       document.querySelectorAll(".rotate").forEach((node) => node.remove());

@@ -7,18 +7,20 @@ export const clickItem = (
   multipleSelection: Function
 ) => {
   document.querySelectorAll(".circles").forEach((node) => node.remove());
+  document.querySelectorAll(".rotate").forEach((node) => node.remove());
   const g = draw.group();
   let controller: () => void;
   g.add(item).fill("transparent").stroke("#66666699");
   new colorList(item);
 
-  g.mousedown((e: any) => {
+  g.mousedown((e: MouseEvent) => {
     if (e.shiftKey) {
       multipleSelection(g);
       return;
     }
     document.querySelector(".colorContainer")?.remove();
     document.querySelectorAll(".circles").forEach((node) => node.remove());
+    document.querySelectorAll(".rotate").forEach((node) => node.remove());
     new colorList(item);
     const x = Number(g.x());
     const y = Number(g.y());
@@ -54,7 +56,6 @@ export const clickItem = (
     const y2 = y1 + Number(el.height());
     const cx = (x1 + x2) / 2;
     const cy = (y1 + y2) / 2;
-    console.log(el.type);
     const pts =
       el.type === "polygon"
         ? [
