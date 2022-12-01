@@ -10,8 +10,6 @@ export const clickItem = (
   document.querySelectorAll(".circles").forEach((node) => node.remove());
   const g = draw.group();
   let controller: () => void;
-  // item.cx(0).cy(0).rotate(-15).translate(150, 75);
-  // const rect = g.rect(50, 100).cx(0).cy(0).rotate(-15).translate(150, 75);
   g.add(item).fill("transparent").stroke("#66666699");
   new colorList(item);
 
@@ -35,11 +33,11 @@ export const clickItem = (
 
     const upHandler = () => {
       controller();
-      draw.off("mousemove", moveHandler);
+      draw.off("mousemove", moveHandler as EventListener);
       draw.off("mouseup", upHandler);
       controller = makeController(item);
     };
-    draw.on("mousemove", moveHandler);
+    draw.on("mousemove", moveHandler as EventListener);
     draw.on("mouseup", upHandler);
   });
 
@@ -66,32 +64,40 @@ export const clickItem = (
 
     const r = ((el.transform().rotate ?? 0) * Math.PI) / 180;
     const inverse = el.matrix().multiply(el.matrix().inverse());
-
     const rotate = g
       .circle(20)
       .cx(cx)
       .cy(cy)
       .addClass("rotate")
-      .attr({ fill: "#CCCCFF" });
+      .attr({ fill: "#CCCCFF" })
+      .transform(el.transform());
+    rotate.on("mousedown", (e) => {
+      e.stopPropagation();
+      rotate.hide();
 
-    rotate.draggable().on("dragmove", ((e: CustomEvent) => {
-      e.preventDefault();
-      dragItem(e);
-      const boxCenter = {
-        x: x1 + Number(el.width()) / 2,
-        y: y1 + Number(el.height()) / 2,
+      const moveHandler = (e: MouseEvent) => {
+        circles.forEach((el) => el.remove());
+        e.preventDefault();
+        const pt = draw.point(e.clientX, e.clientY);
+        const x = x1 + Number(el.width()) / 2;
+        const y = y1 + Number(el.height()) / 2;
+        const angle = Math.atan2(pt.x - x, -(pt.y - y)) * (180 / Math.PI);
+
+        clone.transform(
+          { rotate: angle - Number(clone.transform().rotate) },
+          true
+        );
       };
-      const angle =
-        Math.atan2(
-          e.detail.event.offsetX - boxCenter.x,
-          -(e.detail.event.offsetY - boxCenter.y)
-        ) *
-        (180 / Math.PI);
-      clone.transform({
-        rotate: angle,
-      });
-      el.transform({ rotate: angle });
-    }) as EventListener);
+      const upHandler = () => {
+        el.transform(clone.transform());
+        rotate.show();
+        rotate.cx(el.cx()).cy(el.cy()).transform(el.transform());
+        draw.off("mousemove", moveHandler as EventListener);
+        draw.off("mouseup", upHandler as EventListener);
+      };
+      draw.on("mousemove", moveHandler as EventListener);
+      draw.on("mouseup", upHandler as EventListener);
+    });
 
     const circles = pts.map((pt, i) => {
       const circle = g
@@ -102,6 +108,7 @@ export const clickItem = (
         .transform(el.transform())
         .fill("#666666")
         .mousedown((e: MouseEvent) => {
+          document.querySelectorAll(".rotate").forEach((node) => node.remove());
           e.stopPropagation();
           const moveHandler = (e: MouseEvent) => {
             const point = draw.point(e.clientX, e.clientY);
@@ -133,13 +140,15 @@ export const clickItem = (
           };
           const upHandler = () => {
             el.size(clone.width(), clone.height()).x(clone.x()).y(clone.y());
-            // .translate((_a * dx) / 2 + (_c * dy) / 2, (_b * dx) / 2 + (_d * dy) / 2);
+            // rotate.x(clone.cx()).y(clone.cy())
             remove();
-            draw.off("mousemove", moveHandler);
+
+            // .translate((_a * dx) / 2 + (_c * dy) / 2, (_b * dx) / 2 + (_d * dy) / 2);
+            draw.off("mousemove", moveHandler as EventListener);
             draw.off("mouseup", upHandler);
             controller = makeController(el);
           };
-          draw.on("mousemove", moveHandler);
+          draw.on("mousemove", moveHandler as EventListener);
           draw.on("mouseup", upHandler);
         });
       return circle;

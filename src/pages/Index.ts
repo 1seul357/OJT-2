@@ -42,6 +42,7 @@ export default class Index {
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
       document.querySelectorAll(".select").forEach((node) => node.remove());
       document.querySelectorAll(".circles").forEach((node) => node.remove());
+      document.querySelectorAll(".rotate").forEach((node) => node.remove());
       document.querySelector(".colorContainer")?.remove();
       if (document.querySelector(".group")) {
         removeGroup();
