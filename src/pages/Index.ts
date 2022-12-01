@@ -13,12 +13,12 @@ export default class Index {
 
   render() {
     const group = this.draw.group();
+
     const multipleSelection = (item: any) => {
-      const items: any = item;
       document.querySelector(".colorContainer")?.remove();
       document.querySelectorAll(".circles").forEach((node) => node.remove());
       document.querySelectorAll(".rotate").forEach((node) => node.remove());
-      group.add(items).addClass("group");
+      group.add(item).addClass("group");
       const box = group.bbox();
       const select = this.draw
         .rect(box.width, box.height)

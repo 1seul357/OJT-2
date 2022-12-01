@@ -1,5 +1,4 @@
 import { Shape, Svg } from "@svgdotjs/svg.js";
-import { dragItem } from "./Drag";
 import colorList from "../components/ColorList";
 
 export const clickItem = (
