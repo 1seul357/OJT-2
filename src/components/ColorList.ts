@@ -3,11 +3,10 @@ import { colorData } from "../utils/Data";
 import Element, { createElement } from "../utils/Element";
 import "../css/color.css";
 
-export default class colorList {
+export default class ColorList {
   section;
   constructor(public shape: Shape) {
     this.section = new Element(document.querySelector("section"));
-    this.section.select(".colorContainer").remove();
     this.render();
   }
   render() {

@@ -1,27 +1,26 @@
 import { Shape, Svg } from "@svgdotjs/svg.js";
-import colorList from "../components/ColorList";
+import ColorList from "../components/ColorList";
+import { removeSelector } from "./RemoveSelector";
 
 export const clickItem = (
   item: Shape,
   draw: Svg,
   multipleSelection: Function
 ) => {
-  document.querySelectorAll(".circles").forEach((node) => node.remove());
-  document.querySelectorAll(".rotate").forEach((node) => node.remove());
+  removeSelector();
+
   const g = draw.group();
   let controller: () => void;
   g.add(item).fill("transparent").stroke("#66666699");
-  new colorList(item);
+  new ColorList(item);
 
   g.mousedown((e: MouseEvent) => {
     if (e.shiftKey) {
       multipleSelection(g);
       return;
     }
-    document.querySelector(".colorContainer")?.remove();
-    document.querySelectorAll(".circles").forEach((node) => node.remove());
-    document.querySelectorAll(".rotate").forEach((node) => node.remove());
-    new colorList(item);
+    removeSelector();
+    new ColorList(item);
     const x = Number(g.x());
     const y = Number(g.y());
     const startPoint = draw.point(e.clientX, e.clientY);

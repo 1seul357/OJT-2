@@ -1,7 +1,6 @@
 export default class Element {
   node;
   constructor(tag: any) {
-    console.log(tag);
     if (tag instanceof HTMLElement) {
       this.node = tag;
     } else {

@@ -35,6 +35,7 @@ export default class ItemList {
         .src(arrayImg[index])
         .addClass(array[index])
         .appendTo(container);
+
       image.on("drag", ((e: PointerEvent) => {
         image.addClass("dragging");
       }) as EventListener);

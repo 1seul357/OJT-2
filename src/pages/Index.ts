@@ -3,6 +3,7 @@ import { Svg } from "@svgdotjs/svg.js";
 import { dragItem } from "../utils/Drag";
 import ItemList from "../components/ItemList";
 import { removeGroup } from "../utils/removeGroup";
+import { removeSelector } from "../utils/RemoveSelector";
 
 export default class Index {
   section;
@@ -15,10 +16,7 @@ export default class Index {
     const group = this.draw.group();
 
     const multipleSelection = (item: Svg) => {
-      console.log(item);
-      document.querySelector(".colorContainer")?.remove();
-      document.querySelectorAll(".circles").forEach((node) => node.remove());
-      document.querySelectorAll(".rotate").forEach((node) => node.remove());
+      removeSelector();
       group.add(item).addClass("group");
       const box = group.bbox();
       const select = this.draw
@@ -43,9 +41,7 @@ export default class Index {
 
     this.section.addEventListener("dblclick", ((e: PointerEvent) => {
       document.querySelectorAll(".select").forEach((node) => node.remove());
-      document.querySelectorAll(".circles").forEach((node) => node.remove());
-      document.querySelectorAll(".rotate").forEach((node) => node.remove());
-      document.querySelector(".colorContainer")?.remove();
+      removeSelector();
       if (document.querySelector(".group")) {
         removeGroup();
       }
