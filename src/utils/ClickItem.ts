@@ -55,12 +55,20 @@ export const clickItem = (
     const y2 = y1 + Number(el.height());
     const cx = (x1 + x2) / 2;
     const cy = (y1 + y2) / 2;
-    const pts = [
-      [x1, y1],
-      [x2, y1],
-      [x1, y2],
-      [x2, y2],
-    ];
+    console.log(el.type);
+    const pts =
+      el.type === "polygon"
+        ? [
+            [cx, y1],
+            [x1, y2],
+            [x2, y2],
+          ]
+        : [
+            [x1, y1],
+            [x2, y1],
+            [x1, y2],
+            [x2, y2],
+          ];
 
     const r = ((el.transform().rotate ?? 0) * Math.PI) / 180;
     const inverse = el.matrix().multiply(el.matrix().inverse());
@@ -117,33 +125,45 @@ export const clickItem = (
             const dx = rotatedPoint.x - pt[0];
             const dy = rotatedPoint.y - pt[1];
 
-            if (i === 0) {
-              clone.width(Number(el.width()) - dx);
-              clone.height(Number(el.height()) - dy);
-              clone.x(Number(el.x()) + dx).y(Number(el.y()) + dy);
-            }
-            if (i === 1) {
-              clone.width(Number(el.width()) + dx);
-              clone.height(Number(el.height()) - dy);
-              clone.x(el.x()).y(Number(el.y()) + dy);
-            }
-            if (i === 2) {
-              clone.width(Number(Number(el.width())) - dx);
-              clone.height(Number(Number(el.height())) + dy);
-              clone.x(Number(el.x()) + dx).y(el.y());
-            }
-            if (i === 3) {
-              clone.width(Number(el.width()) + dx);
-              clone.height(Number(el.height()) + dy);
-              clone.x(el.x()).y(el.y());
+            if (item.type === "polygon") {
+              if (i === 0) {
+                clone.height(Number(el.height()) - dy).y(Number(el.y()) + dy);
+              } else if (i === 1) {
+                clone
+                  .x(Number(el.x()) + dx)
+                  .width(Number(el.width()) - dx)
+                  .height(Number(el.height()) - dy);
+              } else {
+                clone.width(Number(el.width()) + dx);
+                clone.height(Number(el.height()) + dy);
+                clone.x(el.x()).y(el.y());
+              }
+            } else {
+              if (i === 0) {
+                clone.width(Number(el.width()) - dx);
+                clone.height(Number(el.height()) - dy);
+                clone.x(Number(el.x()) + dx).y(Number(el.y()) + dy);
+              }
+              if (i === 1) {
+                clone.width(Number(el.width()) + dx);
+                clone.height(Number(el.height()) - dy);
+                clone.x(el.x()).y(Number(el.y()) + dy);
+              }
+              if (i === 2) {
+                clone.width(Number(Number(el.width())) - dx);
+                clone.height(Number(Number(el.height())) + dy);
+                clone.x(Number(el.x()) + dx).y(el.y());
+              }
+              if (i === 3) {
+                clone.width(Number(el.width()) + dx);
+                clone.height(Number(el.height()) + dy);
+                clone.x(el.x()).y(el.y());
+              }
             }
           };
           const upHandler = () => {
             el.size(clone.width(), clone.height()).x(clone.x()).y(clone.y());
-            // rotate.x(clone.cx()).y(clone.cy())
             remove();
-
-            // .translate((_a * dx) / 2 + (_c * dy) / 2, (_b * dx) / 2 + (_d * dy) / 2);
             draw.off("mousemove", moveHandler as EventListener);
             draw.off("mouseup", upHandler);
             controller = makeController(el);
