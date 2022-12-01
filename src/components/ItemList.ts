@@ -11,11 +11,7 @@ import Element, { createElement } from "../utils/Element";
 
 export default class ItemList {
   section;
-  constructor(
-    public $target: HTMLElement,
-    public draw: Svg,
-    public multipleSelection: Function
-  ) {
+  constructor(public $target: HTMLElement, public draw: Svg, public multipleSelection: Function) {
     this.section = new Element(document.querySelector("section"));
     this.render();
   }
@@ -23,18 +19,13 @@ export default class ItemList {
     const draw = this.draw;
     const multipleSelection = this.multipleSelection;
 
-    const container = createElement("div")
-      .addClass("container")
-      .appendTo(this.section);
+    const container = createElement("div").addClass("container").appendTo(this.section);
 
     const array = ["rect", "circle", "polygon"];
     const arrayImg = [rectImg, circleImg, polygonImg];
 
     for (let index = 0; index < array.length; index++) {
-      const image = createElement("img")
-        .src(arrayImg[index])
-        .addClass(array[index])
-        .appendTo(container);
+      const image = createElement("img").src(arrayImg[index]).addClass(array[index]).appendTo(container);
 
       image.on("drag", ((e: PointerEvent) => {
         image.addClass("dragging");
@@ -53,18 +44,7 @@ export default class ItemList {
       } else if (dragging.isContainClass("rect")) {
         new Rectangle(itemData, draw, multipleSelection);
       } else {
-        const point =
-          e.offsetX +
-          "," +
-          (e.offsetY - 75) +
-          " " +
-          (e.offsetX + 75) +
-          "," +
-          (e.offsetY + 75) +
-          " " +
-          (e.offsetX - 75) +
-          "," +
-          (e.offsetY + 75);
+        const point = e.offsetX + "," + (e.offsetY - 75) + " " + (e.offsetX + 75) + "," + (e.offsetY + 75) + " " + (e.offsetX - 75) + "," + (e.offsetY + 75);
         itemData.point = point;
         new Polygon(itemData, draw, multipleSelection);
       }

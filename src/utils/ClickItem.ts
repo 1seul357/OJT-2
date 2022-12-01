@@ -2,11 +2,7 @@ import { Shape, Svg } from "@svgdotjs/svg.js";
 import ColorList from "../components/ColorList";
 import { removeSelector } from "./RemoveSelector";
 
-export const clickItem = (
-  item: Shape,
-  draw: Svg,
-  multipleSelection: Function
-) => {
+export const clickItem = (item: Shape, draw: Svg, multipleSelection: Function) => {
   removeSelector();
 
   const g = draw.group();
@@ -42,12 +38,7 @@ export const clickItem = (
   });
 
   const makeController = (el: Shape) => {
-    const clone = el
-      .clone()
-      .stroke("#66666699")
-      .addClass("clone")
-      .fill("transparent")
-      .addTo(g);
+    const clone = el.clone().stroke("#66666699").addClass("clone").fill("transparent").addTo(g);
 
     const x1 = Number(el.x());
     const x2 = x1 + Number(el.width());
@@ -57,27 +48,12 @@ export const clickItem = (
     const cy = (y1 + y2) / 2;
     const pts =
       el.type === "polygon"
-        ? [
-            [cx, y1],
-            [x1, y2],
-            [x2, y2],
-          ]
-        : [
-            [x1, y1],
-            [x2, y1],
-            [x1, y2],
-            [x2, y2],
-          ];
+        ? [[cx, y1], [x1, y2], [x2, y2]]
+        : [[x1, y1], [x2, y1], [x1, y2], [x2, y2]];
 
     const r = ((el.transform().rotate ?? 0) * Math.PI) / 180;
     const inverse = el.matrix().multiply(el.matrix().inverse());
-    const rotate = g
-      .circle(20)
-      .cx(cx)
-      .cy(cy)
-      .addClass("rotate")
-      .attr({ fill: "#CCCCFF" })
-      .transform(el.transform());
+    const rotate = g .circle(20).cx(cx).cy(cy).addClass("rotate").attr({ fill: "#CCCCFF" }).transform(el.transform());
     rotate.on("mousedown", (e) => {
       e.stopPropagation();
       rotate.hide();
@@ -107,14 +83,7 @@ export const clickItem = (
     });
 
     const circles = pts.map((pt, i) => {
-      const circle = g
-        .circle(10)
-        .cx(pt[0])
-        .cy(pt[1])
-        .addClass("circles")
-        .transform(el.transform())
-        .fill("#666666")
-        .mousedown((e: MouseEvent) => {
+      const circle = g.circle(10).cx(pt[0]).cy(pt[1]).addClass("circles").transform(el.transform()).fill("#666666").mousedown((e: MouseEvent) => {
           document.querySelectorAll(".rotate").forEach((node) => node.remove());
           e.stopPropagation();
           const moveHandler = (e: MouseEvent) => {
@@ -149,7 +118,7 @@ export const clickItem = (
                 clone.x(el.x()).y(Number(el.y()) + dy);
               }
               if (i === 2) {
-                clone.width(Number(Number(el.width())) - dx);
+                clone.width(Number(el.width()) - dx);
                 clone.height(Number(Number(el.height())) + dy);
                 clone.x(Number(el.x()) + dx).y(el.y());
               }

@@ -8,11 +8,7 @@ interface dataType {
 }
 
 export default class Polygon {
-  constructor(
-    public data: dataType,
-    public draw: Svg,
-    public multipleSelection: Function
-  ) {
+  constructor(public data: dataType, public draw: Svg, public multipleSelection: Function) {
     this.render();
   }
   render() {
