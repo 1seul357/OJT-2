@@ -50,35 +50,35 @@ export const clickItem = (item: Shape, draw: Svg, multipleSelection: Function) =
         ? [[cx, y1], [x1, y2], [x2, y2]]
         : [[x1, y1], [x2, y1], [x1, y2], [x2, y2]];
 
-    const r = ((el.transform().rotate ?? 0) * Math.PI) / 180;
-    const inverse = el.matrix().multiply(el.matrix().inverse());
-    const rotate = g .circle(20).cx(cx).cy(cy).addClass("rotate").attr({ fill: "#CCCCFF" }).transform(el.transform());
+    el.transform().rotate ?? 0 * Math.PI / 180;
+    el.matrix().multiply(el.matrix().inverse());
+
+    const rotate = g .circle(20).cx(cx).cy(cy-Number(el.height())).addClass("rotate").attr({ fill: "#CCCCFF" }).transform(el.transform());
     rotate.on("mousedown", (e) => {
       e.stopPropagation();
       rotate.hide();
 
       const moveHandler = (e: MouseEvent) => {
-        circles.forEach((el) => el.remove());
         e.preventDefault();
+        circles.forEach((el) => el.remove());
+
         const pt = draw.point(e.clientX, e.clientY);
-        const x = x1 + Number(el.width()) / 2;
-        const y = y1 + Number(el.height()) / 2;
+        const x = x1 + Number(el.width());
+        const y = y1 + Number(el.height());
         const angle = Math.atan2(pt.x - x, -(pt.y - y)) * (180 / Math.PI);
 
-        clone.transform(
-          { rotate: angle - Number(clone.transform().rotate) },
-          true
-        );
+        clone.transform({rotate: angle - Number(clone.transform().rotate)}, true);
       };
+
       const upHandler = () => {
         el.transform(clone.transform());
         rotate.show();
-        rotate.cx(el.cx()).cy(el.cy()).transform(el.transform());
+        rotate.cx(el.cx()).cy(el.cy()-Number(el.height())).transform(el.transform());
         draw.off("mousemove", moveHandler as EventListener);
-        draw.off("mouseup", upHandler as EventListener);
+        draw.off("mouseup", upHandler);
       };
       draw.on("mousemove", moveHandler as EventListener);
-      draw.on("mouseup", upHandler as EventListener);
+      draw.on("mouseup", upHandler);
     });
 
     const circles = pts.map((pt, i) => {
@@ -88,7 +88,6 @@ export const clickItem = (item: Shape, draw: Svg, multipleSelection: Function) =
           const moveHandler = (e: MouseEvent) => {
             const point = draw.point(e.clientX, e.clientY);
             const rotatedPoint = point.transform(el.matrix().inverse());
-
             const dx = rotatedPoint.x - pt[0];
             const dy = rotatedPoint.y - pt[1];
 
