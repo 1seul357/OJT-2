@@ -6,8 +6,8 @@ import Polygon from "../components/Polygon";
 import polygonImg from "../assets/polygon.png";
 import circleImg from "../assets/circle.png";
 import rectImg from "../assets/rect.png";
-import "../css/ItemList.css";
 import Element, { createElement } from "../utils/Element";
+import "../css/ItemList.css";
 
 export default class ItemList {
   section;
@@ -20,13 +20,11 @@ export default class ItemList {
     const multipleSelection = this.multipleSelection;
 
     const container = createElement("div").addClass("container").appendTo(this.section);
-
     const array = ["rect", "circle", "polygon"];
     const arrayImg = [rectImg, circleImg, polygonImg];
 
     for (let index = 0; index < array.length; index++) {
       const image = createElement("img").src(arrayImg[index]).addClass(array[index]).appendTo(container);
-
       image.on("drag", ((e: PointerEvent) => {
         image.addClass("dragging");
       }) as EventListener);

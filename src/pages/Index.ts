@@ -19,13 +19,7 @@ export default class Index {
       removeSelector();
       group.add(item).addClass("group");
       const box = group.bbox();
-      const select = this.draw
-        .rect(box.width, box.height)
-        .x(box.x)
-        .y(box.y)
-        .addClass("select")
-        .attr({ fill: "#ffffff66" })
-        .stroke({ color: "#00000099" });
+      const select = this.draw.rect(box.width, box.height).x(box.x).y(box.y).addClass("select").attr({ fill: "#ffffff66" }).stroke({ color: "#00000099" });
       group.add(select);
     };
 
@@ -39,12 +33,12 @@ export default class Index {
       }
     }) as EventListener);
 
-    this.section.addEventListener("dblclick", ((e: PointerEvent) => {
+    this.section.addEventListener("dblclick", () => {
       document.querySelectorAll(".select").forEach((node) => node.remove());
       removeSelector();
       if (document.querySelector(".group")) {
         removeGroup();
       }
-    }) as EventListener);
+    });
   }
 }
