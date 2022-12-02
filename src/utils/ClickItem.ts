@@ -46,8 +46,7 @@ export const clickItem = (item: Shape, draw: Svg, multipleSelection: Function) =
     const y2 = y1 + Number(el.height());
     const cx = (x1 + x2) / 2;
     const cy = (y1 + y2) / 2;
-    const pts =
-      el.type === "polygon"
+    const pts = el.type === "polygon"
         ? [[cx, y1], [x1, y2], [x2, y2]]
         : [[x1, y1], [x2, y1], [x1, y2], [x2, y2]];
 
@@ -97,35 +96,22 @@ export const clickItem = (item: Shape, draw: Svg, multipleSelection: Function) =
               if (i === 0) {
                 clone.height(Number(el.height()) - dy).y(Number(el.y()) + dy);
               } else if (i === 1) {
-                clone
-                  .x(Number(el.x()) + dx)
-                  .width(Number(el.width()) - dx)
-                  .height(Number(el.height()) - dy);
+                clone.x(Number(el.x()) + dx).width(Number(el.width()) - dx).height(Number(el.height()) - dy);
               } else {
-                clone.width(Number(el.width()) + dx);
-                clone.height(Number(el.height()) + dy);
-                clone.x(el.x()).y(el.y());
+                clone.width(Number(el.width()) + dx).height(Number(el.height()) + dy).x(el.x()).y(el.y());
               }
             } else {
               if (i === 0) {
-                clone.width(Number(el.width()) - dx);
-                clone.height(Number(el.height()) - dy);
-                clone.x(Number(el.x()) + dx).y(Number(el.y()) + dy);
+                clone.width(Number(el.width()) - dx).height(Number(el.height()) - dy).x(Number(el.x()) + dx).y(Number(el.y()) + dy);
               }
               if (i === 1) {
-                clone.width(Number(el.width()) + dx);
-                clone.height(Number(el.height()) - dy);
-                clone.x(el.x()).y(Number(el.y()) + dy);
+                clone.width(Number(el.width()) + dx).height(Number(el.height()) - dy).x(el.x()).y(Number(el.y()) + dy);
               }
               if (i === 2) {
-                clone.width(Number(el.width()) - dx);
-                clone.height(Number(Number(el.height())) + dy);
-                clone.x(Number(el.x()) + dx).y(el.y());
+                clone.width(Number(el.width()) - dx).height(Number(Number(el.height())) + dy).x(Number(el.x()) + dx).y(el.y());
               }
               if (i === 3) {
-                clone.width(Number(el.width()) + dx);
-                clone.height(Number(el.height()) + dy);
-                clone.x(el.x()).y(el.y());
+                clone.width(Number(el.width()) + dx).height(Number(el.height()) + dy).x(el.x()).y(el.y());
               }
             }
           };
